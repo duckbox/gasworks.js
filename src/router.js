@@ -157,6 +157,8 @@ _.extend(Router.prototype, Events, {
 
       this.currentView = new view( utils.extend(settings,{ params : paramList }) );
 
+      this.trigger('viewChange',this.currentView);
+
       Backbone.Renderer.write(function(){
         this.el.appendChild(this.currentView.render().el);
       }, this);

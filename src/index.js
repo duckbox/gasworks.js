@@ -101,5 +101,10 @@ var Router = GasWorks.Router.extend({
 
 });
 
-new Router();
+var r = new Router();
+
+r.on('viewChange', function(view){
+	console.log('viewChange', view);
+});
+
 GasWorks.history.start();
