@@ -17,7 +17,7 @@
 var delegateEventSplitter = /^(\S+)\s*(.*)$/;
 
 // List of view options to be merged as properties.
-var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events', 'params','name','templates'];
+var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events', 'params','name','templates','data'];
 
 // Creating a Backbone.View creates its initial element outside of the DOM,
 // if an existing element is not provided...
@@ -27,6 +27,7 @@ var View = Backbone.View = function(options) {
     if (viewOptions.indexOf(key) !== -1) this[key] = options[key];
   }, this);
   this._handlers = [];
+  this.data = this.data || {};
   this._ensureElement();
   this.initialize.apply(this, arguments);
   this.delegateEvents();
@@ -67,11 +68,11 @@ _.extend(View.prototype, Events, {
 
     Backbone.Renderer.write(function() {
     
-    if( typeof this.template === 'string' ) {
-      this.el.innerHTML = this.template;
-    } else {
-      this.el.innerHTML = this.template();
-    }
+      if( typeof this.template === 'string' ) {
+        this.el.innerHTML = this.template;
+      } else {
+        this.el.innerHTML = this.template(this.data);
+      }
 
       if (typeof this.afterRender === 'function') {
         this.afterRender();
