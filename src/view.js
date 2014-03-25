@@ -64,7 +64,7 @@ _.extend(View.prototype, Events, {
   // **render** is the core function that your view should override, in order
   // to populate its element (`this.el`), with the appropriate HTML. The
   // convention is for **render** to always return `this`.
-  render: function() {
+  _render: function() {
 
     Backbone.Renderer.write(function() {
     
@@ -81,6 +81,19 @@ _.extend(View.prototype, Events, {
     }, this);
 
     return this;
+
+  },
+
+  render: function() {
+
+    if (typeof this.beforeRender === 'function') {
+      this.beforeRender(this._render.bind(this));
+    } else {
+      this._render();
+    }
+
+    return this;
+  
   },
 
   // Remove this view by taking the element out of the DOM, and removing any
